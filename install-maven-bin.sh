@@ -4,11 +4,13 @@ MAVEN_VERSION="apache-maven-3.5.2"
 
 ARCHIVE_NAME="${MAVEN_VERSION}-bin.tar.gz"
 
-DOWNLOAD_URL="http://mirrors.hust.edu.cn/apache/maven/maven-3/3.5.2/binaries/${ARCHIVE_NAME}"
+ARCHIVE_URL="http://mirrors.hust.edu.cn/apache/maven/maven-3/3.5.2/binaries/${ARCHIVE_NAME}"
 
-INSTALL_DIRECTORY="/usr/local/maven/"
+BASE_DIRECTORY="/usr/local/maven/"
 
-CURRENT_VERSION="${INSTALL_DIRECTORY}/current"
+INSTALL_DIRECTORY="${BASE_DIRECTORY}/${MAVEN_VERSION}"
+
+CURRENT_VERSION="${BASE_DIRECTORY}/current"
 
 PROFILE=/etc/profile.d/m2_home.sh
 
@@ -26,15 +28,25 @@ else
     exit 1
 fi
 
-mkdir -p $INSTALL_DIRECTORY
+mkdir -p $BASE_DIRECTORY
 
-cd $INSTALL_DIRECTORY
+cd $BASE_DIRECTORY
 
-wget $DOWNLOAD_URL
+if [ ! -e "./$ARCHIVE_NAME" ]; then
+    wget $ARCHIVE_URL
+fi
+
+if [ -d "${INSTALL_DIRECTORY}" ]; then
+    rm -rf $INSTALL_DIRECTORY
+fi
 
 tar xzvf $ARCHIVE_NAME
 
-ln -s "${INSTALL_DIRECTORY}/${MAVEN_VERSION}" $CURRENT_VERSION
+if [ -L "$CURRENT_VERSION" ]; then
+    rm -f $CURRENT_VERSION
+fi
+
+ln -s $INSTALL_DIRECTORY $CURRENT_VERSION
 
 echo "M2_HOME=${CURRENT_VERSION}" > $PROFILE
 echo "export PATH=$PATH:\${M2_HOME}/bin" >> $PROFILE
