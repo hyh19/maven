@@ -37,7 +37,7 @@ tar xzvf $ARCHIVE_NAME
 ln -s "${INSTALL_DIRECTORY}/${MAVEN_VERSION}" $CURRENT_VERSION
 
 echo "M2_HOME=${CURRENT_VERSION}" > $PROFILE
-echo "export PATH=$PATH:${M2_HOME}/bin" >> $PROFILE
+echo "export PATH=$PATH:\${M2_HOME}/bin" >> $PROFILE
 
 echo "################################################################################"
 echo "# 1. Open a new terminal or enter 'source /etc/profile.d/m2_home.sh'"
