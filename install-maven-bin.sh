@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+#
+# System Required: CentOS, Debian, Ubuntu
+#
+# Description: Install maven
+#
+# Author: Huang Yuhui
+#
 
 MAVEN_VERSION="apache-maven-3.5.2"
 
@@ -14,9 +21,18 @@ CURRENT_VERSION="${BASE_DIRECTORY}/current"
 
 PROFILE=/etc/profile.d/m2_home.sh
 
-wget -O "/tmp/check_sys.sh" "https://github.com/mrhuangyuhui/shell/raw/snippets/check_sys.sh"
+CHECK_SYS_SCRIPT="/tmp/check_sys.sh"
 
-. /tmp/check_sys.sh
+rm -f $CHECK_SYS_SCRIPT
+
+wget -O $CHECK_SYS_SCRIPT "https://github.com/mrhuangyuhui/shell/raw/snippets/check_sys.sh"
+
+if [ -e "$CHECK_SYS_SCRIPT" ]; then
+    . $CHECK_SYS_SCRIPT
+else
+    echo "ERROR: Download check_sys.sh failed"
+    exit 1
+fi
 
 if check_sys "packageManager" "yum"; then
     sudo yum install tar -y
