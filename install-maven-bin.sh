@@ -35,10 +35,10 @@ else
 fi
 
 if check_sys "packageManager" "yum"; then
-    sudo yum install tar -y
+    yum install tar -y
 elif check_sys "packageManager" "apt"; then
-    sudo apt-get update
-    sudo apt-get install tar -y
+    apt-get update
+    apt-get install tar -y
 else
     echo "ERROR: Not supported distro"
     exit 1
@@ -62,7 +62,7 @@ if [ -L "$CURRENT_VERSION" ]; then
     rm -f $CURRENT_VERSION
 fi
 
-ln -s $INSTALL_DIRECTORY $CURRENT_VERSION
+sudo ln -s $INSTALL_DIRECTORY $CURRENT_VERSION
 
 echo "M2_HOME=${CURRENT_VERSION}" > $PROFILE
 echo "export PATH=$PATH:\${M2_HOME}/bin" >> $PROFILE
